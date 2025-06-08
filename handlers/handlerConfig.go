@@ -39,3 +39,8 @@ func (c *ApiConfig) GetMetrics(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
+
+func (c *ApiConfig) ResetMetrics(w http.ResponseWriter, r *http.Request) {
+	c.ResetApiHits()
+	w.WriteHeader(http.StatusOK)
+}

@@ -14,11 +14,21 @@ func main() {
 		Handler: mux,
 	}
 
+	config := handlers.NewApiConfig()
+
 	link := "http://localhost" + api.Addr
 
 	mux.HandleFunc("GET /health", handlers.HealthCheck)
-	mux.HandleFunc("GET /metrics")
 	fmt.Printf("Health Check: %s/health\n", link)
 
-	api.ListenAndServe()
+	mux.HandleFunc("GET /metrics", config.GetMetrics)
+	fmt.Printf("Metrics: %s/metrics\n", link)
+
+	mux.HandleFunc("POST /metrics/reset", config.ResetMetrics)
+	fmt.Printf("Reset Metrics: %s/metrics/reset\n", link)
+
+	err := api.ListenAndServe()
+	if err != nil {
+		panic(err)
+	}
 }
