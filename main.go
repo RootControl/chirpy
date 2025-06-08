@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/RootControl/handlers"
+	"github.com/RootControl/chirpy/handlers"
 )
 
 func main() {
@@ -14,8 +14,11 @@ func main() {
 		Handler: mux,
 	}
 
-	fmt.Println("Listening on http://localhost:8080")
+	link := "http://localhost" + api.Addr
 
-	handlers
+	mux.HandleFunc("GET /health", handlers.HealthCheck)
+	mux.HandleFunc("GET /metrics")
+	fmt.Printf("Health Check: %s/health\n", link)
+
 	api.ListenAndServe()
 }
